@@ -1,10 +1,14 @@
-const CACHE = "zeljezni-dnevnik-v3";
+const CACHE = "zeljezni-dnevnik-v4";
 const ASSETS = [
   "./",
   "./index.html",
   "./manifest.json",
   "./icon-192.png",
-  "./icon-512.png"
+  "./icon-512.png",
+  "./images/leg-press.png",
+  "./images/chest-press.png",
+  "./images/shoulder-press.png",
+  "./images/assisted-pull-up.png"
 ];
 
 self.addEventListener("install", event => {

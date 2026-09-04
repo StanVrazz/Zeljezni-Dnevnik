@@ -9,6 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="Željezni dnevnik">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#1B1D21">
+  <link rel="manifest" href="./manifest.json">
 <style>
   html, body { margin:0; padding:0; background:#1B1D21; }
   #root { min-height: 100vh; }
@@ -236,5 +237,14 @@ react/cjs/react-jsx-runtime.production.min.js:
    *)
 */
 </script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js").catch(() => {});
+  });
+}
+</script>
+
 </body>
 </html>

@@ -484,8 +484,19 @@ react/cjs/react-jsx-runtime.production.min.js:
 
 <script>
 if ("serviceWorker" in navigator) {
+  // When a new service worker takes control (after an update deploys),
+  // reload once automatically so this tab actually loads the new build
+  // instead of silently staying on whatever was in memory.
+  let zdRefreshing = false;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (zdRefreshing) return;
+    zdRefreshing = true;
+    window.location.reload();
+  });
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./service-worker.js").catch(() => {});
+    navigator.serviceWorker.register("./service-worker.js").then(reg => {
+      reg.update().catch(() => {});
+    }).catch(() => {});
   });
 }
 </script>
@@ -616,6 +627,15 @@ html,body,#root{background:var(--iron-black)!important}
   body.zd-keyboard-open .kt-main{padding-bottom:24px!important;}
   body.zd-keyboard-open .kt-picker-dropdown{
     max-height:42vh!important;
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  /* V24: the dropdown must scroll even when the keyboard isn't open (e.g. the
+     icon-tap browse mode) — an earlier mobile-theme patch set overflow:hidden
+     on .kt-picker-dropdown, which silently clipped the list instead of
+     scrolling it whenever the keyboard-open rule above didn't apply. */
+  .kt-picker-dropdown{
+    max-height:min(50vh,420px)!important;
     overflow-y:auto!important;
     -webkit-overflow-scrolling:touch!important;
   }

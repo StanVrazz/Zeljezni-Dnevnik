@@ -519,14 +519,6 @@ html,body,#root{background:var(--iron-black)!important}
 .kt-stat-row{display:grid!important;grid-template-columns:repeat(2,1fr)!important}.kt-stat{min-width:0!important;border-radius:10px!important}
 .kt-library-filters,.kt-sets,.kt-history-entry,.kt-exercise-card,.kt-gym-chip{border-radius:11px!important}
 .kt-exercise-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-/* Splash */
-#zdv9-splash{position:fixed;inset:0;z-index:99999;background:#030405;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;transition:opacity .38s ease,visibility .38s ease}
-#zdv9-splash.hide{opacity:0;visibility:hidden;pointer-events:none}
-#zdv9-splash:before{content:"";position:absolute;inset:0;background-image:linear-gradient(180deg,rgba(0,0,0,.02) 0%,rgba(0,0,0,.08) 50%,rgba(0,0,0,.62) 100%),url('./images/iron-cover.png');background-position:center;background-size:cover;background-repeat:no-repeat}
-#zdv9-splash .splash-inner{position:relative;width:min(100%,520px);padding:0 22px calc(24px + env(safe-area-inset-bottom));box-sizing:border-box;text-align:center}
-#zdv9-splash .splash-kicker{font-size:10px;letter-spacing:.32em;color:#bfc2c5;text-transform:uppercase;margin-bottom:16px;font-weight:800}
-#zdv9-splash .splash-go{width:100%;height:58px;border:1px solid #ff4a50;border-radius:10px;background:linear-gradient(180deg,#f32930,#bd0d14);color:#fff;font-size:15px;font-weight:950;letter-spacing:.1em;text-transform:uppercase;box-shadow:0 12px 34px rgba(237,28,36,.3);cursor:pointer}
-#zdv9-splash .splash-continue{display:block;margin:13px auto 0;background:transparent;border:0;color:#a7abb0;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:8px;cursor:pointer}
 /* Mobile bottom navigation */
 #zdv9-bottom-nav{display:none}
 @media(max-width:700px){
@@ -562,14 +554,6 @@ html,body,#root{background:var(--iron-black)!important}
     document.body.appendChild(nav); document.body.appendChild(more);
     function sync(){btns.forEach((x,i)=>{const a=x.classList.contains('active');const target=nav.querySelectorAll('button')[i];if(target)target.classList.toggle('active',a)});}
     new MutationObserver(sync).observe(tabs,{subtree:true,attributes:true,attributeFilter:['class']}); sync();
-  };
-  const splash=()=>{
-    if(document.getElementById('zdv9-splash')) return;
-    const el=document.createElement('div');el.id='zdv9-splash';
-    el.innerHTML='<div class="splash-inner"><div class="splash-kicker">Strength Training Log</div><button class="splash-go">Kreni</button><button class="splash-continue">Nastavi</button></div>';
-    document.body.appendChild(el);
-    const close=()=>{localStorage.setItem('zdv9_splash_seen','1');el.classList.add('hide');setTimeout(()=>el.remove(),450)};
-    el.querySelector('.splash-go').onclick=close;el.querySelector('.splash-continue').onclick=close;
   };
   const run=()=>{boot();};
   const mo=new MutationObserver(()=>boot()); mo.observe(document.body,{childList:true,subtree:true});
@@ -613,12 +597,7 @@ html,body,#root{background:var(--iron-black)!important}
     };
     const go=el.querySelector('.v11-splash-go');
     const cont=el.querySelector('.v11-splash-continue');
-    // Android Chrome/PWA: handle pointer and touch activation explicitly.
-    [go,cont].forEach(btn=>{
-      btn.addEventListener('pointerup',close,{passive:true});
-      btn.addEventListener('touchend',close,{passive:true});
-      btn.addEventListener('click',close);
-    });
+    [go,cont].forEach(btn=>{ btn.addEventListener('click',close); });
   };
   const style=document.createElement('style');
   style.textContent=`#zdv11-splash{position:fixed;inset:0;z-index:999999;background:#030405;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;opacity:1;visibility:visible;transition:opacity .38s ease,visibility .38s ease}#zdv11-splash.v11-hide{opacity:0;visibility:hidden;pointer-events:none}#zdv11-splash:before{content:"";position:absolute;inset:0;background-image:linear-gradient(180deg,rgba(0,0,0,.02) 0%,rgba(0,0,0,.04) 42%,rgba(0,0,0,.56) 100%),url('./images/iron-cover.png');background-position:center;background-size:cover;background-repeat:no-repeat}.v11-splash-inner{position:relative;width:min(100%,520px);padding:0 22px calc(24px + env(safe-area-inset-bottom));box-sizing:border-box;text-align:center}.v11-splash-go{width:100%;height:58px;border:1px solid #ff4a50;border-radius:10px;background:linear-gradient(180deg,#f32930,#bd0d14);color:#fff;font-size:15px;font-weight:950;letter-spacing:.1em;text-transform:uppercase;box-shadow:0 12px 34px rgba(237,28,36,.3);cursor:pointer}.v11-splash-continue{display:block;margin:13px auto 0;background:transparent;border:0;color:#d0d3d6;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:8px;cursor:pointer}`;
@@ -652,10 +631,12 @@ html,body,#root{background:var(--iron-black)!important}
     const a=tabs(), nav=document.getElementById('zdv9-bottom-nav');
     if(!nav||a.length<6)return;
     const bs=[...nav.querySelectorAll('button')];
-    bs.forEach(b=>b.classList.remove('active'));
     const active=a.findIndex(b=>b.classList.contains('active'));
-    if(active>=0&&active<4&&bs[active])bs[active].classList.add('active');
-    if(active>=4&&bs[4])bs[4].classList.add('active');
+    const wantIdx = active>=0&&active<4 ? active : (active>=4 ? 4 : -1);
+    bs.forEach((b,i)=>{
+      const want = i===wantIdx;
+      if(b.classList.contains('active')!==want) b.classList.toggle('active',want);
+    });
   }
   window.__zdv17Sync=sync;
   new MutationObserver(sync).observe(document.body,{subtree:true,attributes:true,attributeFilter:['class']});
@@ -700,24 +681,6 @@ html,body,#root{background:var(--iron-black)!important}
 })();
 </script>
 
-<script>
-/* V18 fallback: close splash on the first real activation, before other document handlers. */
-(function(){
-  function closeSplashFromEvent(e){
-    const b=e.target && e.target.closest ? e.target.closest('#zdv11-splash .v11-splash-go, #zdv11-splash .v11-splash-continue') : null;
-    if(!b)return;
-    const el=document.getElementById('zdv11-splash');
-    if(!el)return;
-    e.stopPropagation();
-    el.classList.add('v11-hide');
-    setTimeout(()=>{if(el.parentNode)el.remove()},300);
-  }
-  document.addEventListener('pointerdown',closeSplashFromEvent,true);
-  document.addEventListener('touchend',closeSplashFromEvent,true);
-  document.addEventListener('click',closeSplashFromEvent,true);
-})();
-</script>
-
 <style id="zdv18-splash-fix">
 /* V18: reliable splash activation on Android Chrome/PWA. */
 #zdv11-splash .v11-splash-go,#zdv11-splash .v11-splash-continue{
@@ -725,8 +688,7 @@ html,body,#root{background:var(--iron-black)!important}
 }
 </style>
 
-</body>
-</html>
+
 <style id="zdv12-iron-final">
 /* ===== V12 IRON FINAL =====
    Cleaner splash: no slogan/arms; larger text; plate positioned lower-right. */
@@ -761,7 +723,5 @@ html,body,#root{background:var(--iron-black)!important}
 }
 @media(max-width:370px){.kt-title{font-size:23px!important}}
 </style>
-
-
-
+</body>
 </html>

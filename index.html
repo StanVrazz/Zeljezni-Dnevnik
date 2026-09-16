@@ -681,6 +681,30 @@ html,body,#root{background:var(--iron-black)!important}
 })();
 </script>
 
+<script>
+/* V20: tapping the search-icon zone of the exercise picker opens the dropdown
+   without the on-screen keyboard (readonly-focus trick — mobile browsers don't
+   raise the keyboard for a readonly input). Tapping the rest of the field types
+   as usual. If the picker was opened via the icon and the person then taps the
+   field itself, that tap switches it to editable and opens the keyboard. */
+(function(){
+  function inIconZone(input,x){
+    const r=input.getBoundingClientRect();
+    return x>=r.right-40;
+  }
+  document.addEventListener('pointerdown',function(e){
+    const input=e.target.closest?e.target.closest('input.kt-picker-input'):null;
+    if(!input||!input.closest('.kt-picker'))return;
+    const browse=inIconZone(input,e.clientX);
+    if(!browse&&!input.readOnly)return;
+    e.preventDefault();
+    input.readOnly=browse;
+    input.focus();
+    if(browse)input.addEventListener('blur',function(){input.readOnly=false;},{once:true});
+  },true);
+})();
+</script>
+
 <style id="zdv18-splash-fix">
 /* V18: reliable splash activation on Android Chrome/PWA. */
 #zdv11-splash .v11-splash-go,#zdv11-splash .v11-splash-continue{

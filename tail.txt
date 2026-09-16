@@ -1,0 +1,145 @@
+(0,s.jsx)("p",{className:"kt-backup-text",children:"Skini sve svoje podatke (unosi, vje\u017Ebe, redoslijed, slike) kao jednu datoteku. To je jedina kopija izvan ovog telefona \u2014 dr\u017Ei je negdje sigurno (mail sam sebi, cloud disk)."}),(0,s.jsx)("button",{className:"kt-save-btn",style:{marginTop:0},onClick:kf,children:"Preuzmi sigurnosnu kopiju"})]}),(0,s.jsxs)("div",{className:"kt-library-section",children:[(0,s.jsx)("div",{className:"kt-library-heading",children:"Uvoz"}),(0,s.jsx)("p",{className:"kt-backup-text",children:"Vrati podatke iz prethodno preuzete datoteke. Ovo potpuno zamjenjuje trenutne podatke u aplikaciji."}),(0,s.jsx)("button",{className:"kt-add-set",onClick:()=>ci.current&&ci.current.click(),children:"Odaberi datoteku"}),(0,s.jsx)("input",{ref:ci,type:"file",accept:"application/json",style:{display:"none"},onChange:xf}),Zu&&(0,s.jsx)("div",{style:{color:X.danger,fontSize:13,marginTop:10},children:Zu}),at&&(0,s.jsxs)("div",{className:"kt-new-exercise",style:{marginTop:14},children:[(0,s.jsxs)("div",{style:{fontSize:13,marginBottom:10},children:["Datoteka sadr\u017Ei ",at.entries?at.entries.length:0," unosa. Zamijeniti trenutne podatke ovima?"]}),(0,s.jsxs)("div",{style:{display:"flex",gap:8},children:[(0,s.jsx)("button",{className:"kt-confirm-btn danger",style:{flex:1},onClick:wf,children:"Da, zamijeni"}),(0,s.jsx)("button",{className:"kt-confirm-btn",onClick:()=>di(null),children:"Odustani"})]})]})]})]})]})]}):(0,s.jsxs)("div",{className:"kt-app kt-loading",children:[(0,s.jsx)("style",{children:lf}),(0,s.jsx)(Cr,{size:28,className:"kt-loading-icon"}),(0,s.jsx)("div",{style:{marginTop:10},children:"U\u010Ditavanje dnevnika\u2026"})]})}var ov=document.getElementById("root");(0,of.createRoot)(ov).render((0,s.jsx)(iv,{}));})();
+/*! Bundled license information:
+
+react/cjs/react.production.min.js:
+  (**
+   * @license React
+   * react.production.min.js
+   *
+   * Copyright (c) Facebook, Inc. and its affiliates.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *)
+
+scheduler/cjs/scheduler.production.min.js:
+  (**
+   * @license React
+   * scheduler.production.min.js
+   *
+   * Copyright (c) Facebook, Inc. and its affiliates.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *)
+
+react-dom/cjs/react-dom.production.min.js:
+  (**
+   * @license React
+   * react-dom.production.min.js
+   *
+   * Copyright (c) Facebook, Inc. and its affiliates.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *)
+
+react/cjs/react-jsx-runtime.production.min.js:
+  (**
+   * @license React
+   * react-jsx-runtime.production.min.js
+   *
+   * Copyright (c) Facebook, Inc. and its affiliates.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *)
+*/
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js").catch(() => {});
+  });
+}
+</script>
+
+
+<style id="zdv9-mobile-iron">
+/* ===== V9 MOBILE-FIRST IRON ===== */
+:root{--iron-red:#ed1c24;--iron-red2:#b70810;--iron-black:#070809;--iron-panel:#101214;--iron-line:#292d32}
+html,body,#root{background:var(--iron-black)!important}
+.kt-app{min-height:100svh!important;background:
+ radial-gradient(700px 300px at 50% -90px,rgba(237,28,36,.12),transparent 65%),
+ linear-gradient(rgba(255,255,255,.014) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(255,255,255,.009) 1px,transparent 1px),#070809!important;background-size:auto,4px 4px,4px 4px,auto!important}
+.kt-header{height:68px;min-height:68px;padding:0 18px!important;position:sticky;top:0;z-index:90!important;background:rgba(5,6,7,.96)!important;border-bottom:1px solid #262a2e!important}
+.kt-title{font-size:21px!important;letter-spacing:.035em!important;display:flex;align-items:center;gap:9px}
+.kt-title svg{color:var(--iron-red)!important}
+.kt-date{font-size:9px!important;color:#777c83;line-height:1.45;text-align:right}.kt-session-count{font-size:9px!important}
+.kt-tabs{position:sticky;top:68px;z-index:89!important;min-height:0;padding:7px 12px!important;gap:5px!important;overflow-x:auto;scrollbar-width:none;background:rgba(7,8,9,.97)!important;border-bottom:1px solid #25292e!important}
+.kt-tabs::-webkit-scrollbar{display:none}
+.kt-tab{padding:11px 13px!important;border-radius:7px!important;font-size:10px!important;white-space:nowrap!important}
+.kt-main{max-width:560px!important;padding:22px 14px 100px!important;position:relative;isolation:isolate}
+.kt-app:after{content:"";position:fixed;right:-55px;bottom:72px;width:330px;height:330px;background:url('./images/iron-weight-texture-hd.png') center/cover no-repeat;opacity:.16;filter:grayscale(1) contrast(1.18);mix-blend-mode:screen;pointer-events:none;z-index:0}.kt-app>*{position:relative;z-index:1}.kt-main:after{display:none}
+.kt-label{font-size:10px!important;color:#8b9097!important;letter-spacing:.12em!important}
+.kt-field{margin-bottom:18px!important}
+.kt-date-input,.kt-picker-input{min-height:52px!important;border-radius:10px!important;background:#111417!important;border-color:#30353b!important;font-size:15px!important}
+.kt-selected-exercise{border-radius:12px!important;background:linear-gradient(145deg,#191c20,#0d0f11)!important;border-color:#3a3f45!important}
+.kt-last-time{border-left:3px solid var(--iron-red)!important;background:linear-gradient(145deg,#181b1f,#0d0f11)!important}
+.kt-last-time-title{font-size:13px!important}.kt-last-time-best{color:#ff4b52!important}
+.kt-save-btn{min-height:56px!important;border-radius:10px!important;background:linear-gradient(180deg,#f3232b,#c30e15)!important;box-shadow:0 10px 30px rgba(237,28,36,.25)!important}
+.kt-metric-toggle{display:grid!important;grid-template-columns:repeat(3,1fr)!important}.kt-metric-btn{font-size:10px!important}
+.kt-stat-row{display:grid!important;grid-template-columns:repeat(2,1fr)!important}.kt-stat{min-width:0!important;border-radius:10px!important}
+.kt-library-filters,.kt-sets,.kt-history-entry,.kt-exercise-card,.kt-gym-chip{border-radius:11px!important}
+.kt-exercise-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+/* Splash */
+#zdv9-splash{position:fixed;inset:0;z-index:99999;background:#030405;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;transition:opacity .38s ease,visibility .38s ease}
+#zdv9-splash.hide{opacity:0;visibility:hidden;pointer-events:none}
+#zdv9-splash:before{content:"";position:absolute;inset:0;background-image:linear-gradient(180deg,rgba(0,0,0,.02) 0%,rgba(0,0,0,.08) 50%,rgba(0,0,0,.62) 100%),url('./images/iron-cover.png');background-position:center;background-size:cover;background-repeat:no-repeat}
+#zdv9-splash .splash-inner{position:relative;width:min(100%,520px);padding:0 22px calc(24px + env(safe-area-inset-bottom));box-sizing:border-box;text-align:center}
+#zdv9-splash .splash-kicker{font-size:10px;letter-spacing:.32em;color:#bfc2c5;text-transform:uppercase;margin-bottom:16px;font-weight:800}
+#zdv9-splash .splash-go{width:100%;height:58px;border:1px solid #ff4a50;border-radius:10px;background:linear-gradient(180deg,#f32930,#bd0d14);color:#fff;font-size:15px;font-weight:950;letter-spacing:.1em;text-transform:uppercase;box-shadow:0 12px 34px rgba(237,28,36,.3);cursor:pointer}
+#zdv9-splash .splash-continue{display:block;margin:13px auto 0;background:transparent;border:0;color:#a7abb0;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:8px;cursor:pointer}
+/* Mobile bottom navigation */
+#zdv9-bottom-nav{display:none}
+@media(max-width:700px){
+ .kt-tabs{display:none!important}
+ #zdv9-bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:200;display:grid;grid-template-columns:repeat(5,1fr);gap:3px;padding:7px 7px calc(7px + env(safe-area-inset-bottom));background:rgba(6,7,8,.97);border-top:1px solid #2a2d31;box-shadow:0 -12px 35px rgba(0,0,0,.42);backdrop-filter:blur(14px)}
+ #zdv9-bottom-nav button{appearance:none;border:1px solid transparent;background:transparent;color:#777c83;border-radius:8px;padding:8px 3px 7px;font-size:9px;font-weight:900;letter-spacing:.045em;text-transform:uppercase;min-width:0}
+ #zdv9-bottom-nav button .bn-icon{display:block;font-size:17px;line-height:16px;margin-bottom:4px;color:#a5a9ae}
+ #zdv9-bottom-nav button.active{color:#fff;background:linear-gradient(180deg,#d91920,#b40d13);border-color:#f0343a;box-shadow:0 0 18px rgba(237,28,36,.2)}
+ #zdv9-bottom-nav button.active .bn-icon{color:#fff}
+ #zdv9-more{position:fixed;left:12px;right:12px;bottom:82px;z-index:201;background:#101214;border:1px solid #363b41;border-radius:13px;padding:8px;box-shadow:0 20px 60px rgba(0,0,0,.65);display:none}
+ #zdv9-more.open{display:block}
+ #zdv9-more button{display:block;width:100%;padding:13px;border:0;border-bottom:1px solid #252a2f;background:transparent;color:#eee;text-align:left;font-weight:850;font-size:12px;text-transform:uppercase;letter-spacing:.07em}
+ #zdv9-more button:last-child{border-bottom:0}
+ .kt-main{padding-bottom:105px!important}
+ .kt-title{font-size:19px!important}
+ .kt-date{display:none!important}
+}
+</style>
+<script>
+(function(){
+  const boot=()=>{
+    // Copy the two user-selected brand images into local package names via CSS assets prepared with V9.
+    // Build mobile bottom navigation from the existing React tab buttons, preserving their handlers/state.
+    const tabs=document.querySelector('.kt-tabs');
+    if(!tabs || document.getElementById('zdv9-bottom-nav')) return;
+    const btns=[...tabs.querySelectorAll('.kt-tab')];
+    if(btns.length<6) return;
+    const nav=document.createElement('nav'); nav.id='zdv9-bottom-nav'; nav.setAttribute('aria-label','Glavna navigacija');
+    const specs=[['log','⚒','Trening',0],['history','◷','Povijest',1],['progress','↗','Progres',2],['library','◈','Vježbe',3],['more','•••','Više',-1]];
+    const more=document.createElement('div'); more.id='zdv9-more';
+    [[4,'Moja teretana'],[5,'Sigurnosna kopija']].forEach(([i,label])=>{const b=document.createElement('button');b.textContent=label;b.addEventListener('click',()=>{btns[i].click();more.classList.remove('open');sync()});more.appendChild(b)});
+    specs.forEach(([key,icon,label,i])=>{const b=document.createElement('button');b.dataset.key=key;b.innerHTML='<span class="bn-icon">'+icon+'</span>'+label;b.addEventListener('click',()=>{if(key==='more'){more.classList.toggle('open');return}btns[i].click();more.classList.remove('open');setTimeout(sync,0)});nav.appendChild(b)});
+    document.body.appendChild(nav); document.body.appendChild(more);
+    function sync(){btns.forEach((x,i)=>{const a=x.classList.contains('active');const target=nav.querySelectorAll('button')[i];if(target)target.classList.toggle('active',a)});}
+    new MutationObserver(sync).observe(tabs,{subtree:true,attributes:true,attributeFilter:['class']}); sync();
+  };
+  const splash=()=>{
+    if(document.getElementById('zdv9-splash')) return;
+    const el=document.createElement('div');el.id='zdv9-splash';
+    el.innerHTML='<div class="splash-inner"><div class="splash-kicker">Strength Training Log</div><button class="splash-go">Kreni</button><button class="splash-continue">Nastavi</button></div>';
+    document.body.appendChild(el);
+    const close=()=>{localStorage.setItem('zdv9_splash_seen','1');el.classList.add('hide');setTimeout(()=>el.remove(),450)};
+    el.querySelector('.splash-go').onclick=close;el.querySelector('.splash-continue').onclick=close;
+  };
+  const run=()=>{boot(); if(!localStorage.getItem('zdv9_splash_seen')) splash();};
+  const mo=new MutationObserver(()=>boot()); mo.observe(document.body,{childList:true,subtree:true});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else setTimeout(run,50);
+})();
+</script>
+</body>
+</html>

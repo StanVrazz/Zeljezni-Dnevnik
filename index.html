@@ -557,5 +557,43 @@ html,body,#root{background:var(--iron-black)!important}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else setTimeout(run,50);
 })();
 </script>
+
+<style id="zdv10-iron-final">
+/* ===== V10 IRON FINAL ===== */
+.kt-header{justify-content:center!important;align-items:center!important;height:72px!important;min-height:72px!important;padding:0 12px!important}
+.kt-title{justify-content:center!important;width:100%!important;font-size:24px!important;font-weight:950!important;letter-spacing:.035em!important;white-space:nowrap!important;line-height:1!important}
+.kt-title svg{display:none!important}
+.kt-title span{display:block!important;text-align:center!important}
+.kt-app:after{content:""!important;position:fixed!important;right:-95px!important;bottom:72px!important;width:440px!important;height:440px!important;background:url('./images/iron-weight-texture-clean.png') center/cover no-repeat!important;opacity:.30!important;filter:grayscale(1) contrast(1.42) brightness(1.18)!important;mix-blend-mode:screen!important;pointer-events:none!important;z-index:0!important}
+@media(max-width:700px){
+ .kt-header{height:72px!important;min-height:72px!important}
+ .kt-title{font-size:24px!important}
+ #zdv9-bottom-nav{padding:7px 7px calc(8px + env(safe-area-inset-bottom))!important}
+ #zdv9-bottom-nav button{padding:8px 2px 8px!important;font-size:11px!important;letter-spacing:.035em!important}
+ #zdv9-bottom-nav button .bn-icon{font-size:25px!important;line-height:25px!important;margin-bottom:6px!important}
+ #zdv9-bottom-nav button.active{border-radius:9px!important}
+ .kt-main{padding-bottom:112px!important}
+}
+@media(max-width:370px){.kt-title{font-size:22px!important}}
+</style>
+<script>
+/* V10: show the cover screen on every fresh app launch. Training data remains untouched in IndexedDB. */
+(function(){
+  const showV10Splash=()=>{
+    if(document.getElementById('zdv10-splash')) return;
+    const el=document.createElement('div');
+    el.id='zdv10-splash';
+    el.innerHTML='<div class="v10-splash-inner"><button class="v10-splash-go">KRENI</button><button class="v10-splash-continue">NASTAVI</button></div>';
+    document.body.appendChild(el);
+    const close=()=>{el.classList.add('v10-hide');setTimeout(()=>el.remove(),420)};
+    el.querySelector('.v10-splash-go').onclick=close;
+    el.querySelector('.v10-splash-continue').onclick=close;
+  };
+  const style=document.createElement('style');
+  style.textContent=`#zdv10-splash{position:fixed;inset:0;z-index:999999;background:#030405;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;opacity:1;visibility:visible;transition:opacity .38s ease,visibility .38s ease}#zdv10-splash.v10-hide{opacity:0;visibility:hidden;pointer-events:none}#zdv10-splash:before{content:"";position:absolute;inset:0;background-image:linear-gradient(180deg,rgba(0,0,0,.03) 0%,rgba(0,0,0,.08) 48%,rgba(0,0,0,.62) 100%),url('./images/iron-cover.png');background-position:center;background-size:cover;background-repeat:no-repeat}.v10-splash-inner{position:relative;width:min(100%,520px);padding:0 22px calc(24px + env(safe-area-inset-bottom));box-sizing:border-box;text-align:center}.v10-splash-go{width:100%;height:58px;border:1px solid #ff4a50;border-radius:10px;background:linear-gradient(180deg,#f32930,#bd0d14);color:#fff;font-size:15px;font-weight:950;letter-spacing:.1em;text-transform:uppercase;box-shadow:0 12px 34px rgba(237,28,36,.3);cursor:pointer}.v10-splash-continue{display:block;margin:13px auto 0;background:transparent;border:0;color:#d0d3d6;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:8px;cursor:pointer}`;
+  document.head.appendChild(style);
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',showV10Splash,{once:true}); else setTimeout(showV10Splash,80);
+})();
+</script>
 </body>
 </html>

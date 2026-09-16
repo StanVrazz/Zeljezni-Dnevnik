@@ -1,4 +1,4 @@
-const CACHE = "zeljezni-dnevnik-v9";
+const CACHE = "zeljezni-dnevnik-v9-1";
 const ASSETS = [
   "./",
   "./index.html",
@@ -7,7 +7,7 @@ const ASSETS = [
   "./icon-512.png",
   "./images/assisted-pull-up.png",
   "./images/chest-press.png",
-  "./images/leg-press.png","./images/iron-cover.png","./images/iron-weight-texture.png",
+  "./images/leg-press.png","./images/iron-cover.png","./images/iron-weight-texture.png","./images/iron-weight-texture-hd.png",
   "./images/shoulder-press.png"
 ];
 self.addEventListener("install", event => {

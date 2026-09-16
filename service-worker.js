@@ -1,4 +1,4 @@
-const CACHE = "zeljezni-dnevnik-v17";
+const CACHE = "zeljezni-dnevnik-v18";
 const ASSETS = [
   "./",
   "./index.html",

@@ -604,9 +604,21 @@ html,body,#root{background:var(--iron-black)!important}
     el.id='zdv11-splash';
     el.innerHTML='<div class="v11-splash-inner"><button class="v11-splash-go">KRENI</button><button class="v11-splash-continue">NASTAVI</button></div>';
     document.body.appendChild(el);
-    const close=()=>{el.classList.add('v11-hide');setTimeout(()=>el.remove(),420)};
-    el.querySelector('.v11-splash-go').onclick=close;
-    el.querySelector('.v11-splash-continue').onclick=close;
+    let closed=false;
+    const close=()=>{
+      if(closed)return;
+      closed=true;
+      el.classList.add('v11-hide');
+      setTimeout(()=>{ if(el.parentNode) el.remove(); },420);
+    };
+    const go=el.querySelector('.v11-splash-go');
+    const cont=el.querySelector('.v11-splash-continue');
+    // Android Chrome/PWA: handle pointer and touch activation explicitly.
+    [go,cont].forEach(btn=>{
+      btn.addEventListener('pointerup',close,{passive:true});
+      btn.addEventListener('touchend',close,{passive:true});
+      btn.addEventListener('click',close);
+    });
   };
   const style=document.createElement('style');
   style.textContent=`#zdv11-splash{position:fixed;inset:0;z-index:999999;background:#030405;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;opacity:1;visibility:visible;transition:opacity .38s ease,visibility .38s ease}#zdv11-splash.v11-hide{opacity:0;visibility:hidden;pointer-events:none}#zdv11-splash:before{content:"";position:absolute;inset:0;background-image:linear-gradient(180deg,rgba(0,0,0,.02) 0%,rgba(0,0,0,.04) 42%,rgba(0,0,0,.56) 100%),url('./images/iron-cover.png');background-position:center;background-size:cover;background-repeat:no-repeat}.v11-splash-inner{position:relative;width:min(100%,520px);padding:0 22px calc(24px + env(safe-area-inset-bottom));box-sizing:border-box;text-align:center}.v11-splash-go{width:100%;height:58px;border:1px solid #ff4a50;border-radius:10px;background:linear-gradient(180deg,#f32930,#bd0d14);color:#fff;font-size:15px;font-weight:950;letter-spacing:.1em;text-transform:uppercase;box-shadow:0 12px 34px rgba(237,28,36,.3);cursor:pointer}.v11-splash-continue{display:block;margin:13px auto 0;background:transparent;border:0;color:#d0d3d6;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:8px;cursor:pointer}`;
@@ -687,6 +699,31 @@ html,body,#root{background:var(--iron-black)!important}
   setTimeout(keyboardState,300);
 })();
 </script>
+
+<script>
+/* V18 fallback: close splash on the first real activation, before other document handlers. */
+(function(){
+  function closeSplashFromEvent(e){
+    const b=e.target && e.target.closest ? e.target.closest('#zdv11-splash .v11-splash-go, #zdv11-splash .v11-splash-continue') : null;
+    if(!b)return;
+    const el=document.getElementById('zdv11-splash');
+    if(!el)return;
+    e.stopPropagation();
+    el.classList.add('v11-hide');
+    setTimeout(()=>{if(el.parentNode)el.remove()},300);
+  }
+  document.addEventListener('pointerdown',closeSplashFromEvent,true);
+  document.addEventListener('touchend',closeSplashFromEvent,true);
+  document.addEventListener('click',closeSplashFromEvent,true);
+})();
+</script>
+
+<style id="zdv18-splash-fix">
+/* V18: reliable splash activation on Android Chrome/PWA. */
+#zdv11-splash .v11-splash-go,#zdv11-splash .v11-splash-continue{
+  position:relative; z-index:2; touch-action:manipulation; -webkit-tap-highlight-color:transparent;
+}
+</style>
 
 </body>
 </html>

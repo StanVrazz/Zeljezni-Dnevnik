@@ -701,26 +701,36 @@ html,body,#root{background:var(--iron-black)!important}
 })();
 </script>
 
+<style id="zdv21-picker-icon">
+/* V21: the search icon becomes a real tap target instead of a decorative,
+   click-through overlay. */
+.kt-picker-icon{pointer-events:auto!important;cursor:pointer;}
+</style>
 <script>
-/* V20: tapping the search-icon zone of the exercise picker opens the dropdown
-   without the on-screen keyboard (readonly-focus trick — mobile browsers don't
-   raise the keyboard for a readonly input). Tapping the rest of the field types
-   as usual. If the picker was opened via the icon and the person then taps the
-   field itself, that tap switches it to editable and opens the keyboard. */
+/* V21: the search icon is now a real, separately clickable target (like a
+   dedicated button next to a text field) instead of an invisible zone on the
+   input — tapping it opens the exercise dropdown without the keyboard, and
+   never leaves the input sitting focused. A lingering focused input turned
+   out to be the deeper problem: iOS WebKit can treat a touch-drag started
+   near a focused text field as a text-selection/cursor gesture rather than
+   a scroll, which is why the list opened fine but wouldn't scroll. Flashing
+   focus just long enough to trigger the picker's onFocus (which opens the
+   dropdown), then immediately blurring, avoids that state entirely — the
+   field goes right back to being a completely ordinary, unfocused input,
+   so a direct tap on it still opens the keyboard exactly as before. */
 (function(){
-  function inIconZone(input,x){
-    const r=input.getBoundingClientRect();
-    return x>=r.right-40;
-  }
   document.addEventListener('pointerdown',function(e){
-    const input=e.target.closest?e.target.closest('input.kt-picker-input'):null;
-    if(!input||!input.closest('.kt-picker'))return;
-    const browse=inIconZone(input,e.clientX);
-    if(!browse&&!input.readOnly)return;
+    const icon=e.target.closest?e.target.closest('.kt-picker-icon'):null;
+    if(!icon)return;
+    const input=icon.previousElementSibling;
+    if(!input||!input.classList||!input.classList.contains('kt-picker-input'))return;
     e.preventDefault();
-    input.readOnly=browse;
+    input.readOnly=true;
     input.focus();
-    if(browse)input.addEventListener('blur',function(){input.readOnly=false;},{once:true});
+    setTimeout(function(){
+      input.blur();
+      input.readOnly=false;
+    },60);
   },true);
 })();
 </script>

@@ -614,6 +614,80 @@ html,body,#root{background:var(--iron-black)!important}
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',showV11Splash,{once:true}); else setTimeout(showV11Splash,80);
 })();
 </script>
+
+<style id="zdv17-mobile-fixes">
+/* V17: conservative Android keyboard fix. Do not resize the app itself. */
+@media(max-width:700px){
+  html,body{overflow-x:hidden!important;}
+  .kt-main{touch-action:pan-y!important;}
+  body.zd-keyboard-open #zdv9-bottom-nav,
+  body.zd-keyboard-open #zdv9-more{display:none!important;}
+  body.zd-keyboard-open .kt-main{padding-bottom:24px!important;}
+  body.zd-keyboard-open .kt-picker-dropdown{
+    max-height:42vh!important;
+    overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+}
+</style>
+<script>
+/* V17: keyboard visibility + reliable swipe navigation across all six content areas. */
+(function(){
+  const isMobile=()=>window.matchMedia('(max-width:700px)').matches;
+  const tabs=()=>{const x=document.querySelector('.kt-tabs');return x?[...x.querySelectorAll('.kt-tab')]:[]};
+  const go=i=>{const a=tabs(); if(!a[i])return; a[i].click(); const m=document.getElementById('zdv9-more'); if(m)m.classList.remove('open'); setTimeout(sync,30);};
+  function sync(){
+    const a=tabs(), nav=document.getElementById('zdv9-bottom-nav');
+    if(!nav||a.length<6)return;
+    const bs=[...nav.querySelectorAll('button')];
+    bs.forEach(b=>b.classList.remove('active'));
+    const active=a.findIndex(b=>b.classList.contains('active'));
+    if(active>=0&&active<4&&bs[active])bs[active].classList.add('active');
+    if(active>=4&&bs[4])bs[4].classList.add('active');
+  }
+  window.__zdv17Sync=sync;
+  new MutationObserver(sync).observe(document.body,{subtree:true,attributes:true,attributeFilter:['class']});
+  document.addEventListener('click',()=>setTimeout(sync,20),true);
+
+  // Swipe on the app background/content. Interactive controls remain untouched.
+  let sx=0,sy=0,tracking=false;
+  const blocked=t=>!!(t&&t.closest&&t.closest('#zdv9-bottom-nav,#zdv9-more,input,textarea,select,button,[contenteditable="true"],.kt-exercise-card'));
+  document.addEventListener('touchstart',e=>{
+    if(!isMobile()||e.touches.length!==1||blocked(e.target))return;
+    sx=e.touches[0].clientX; sy=e.touches[0].clientY; tracking=true;
+  },{passive:true,capture:true});
+  document.addEventListener('touchend',e=>{
+    if(!tracking){return;} tracking=false;
+    const dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
+    if(Math.abs(dx)<70||Math.abs(dx)<Math.abs(dy)*1.35)return;
+    const a=tabs(), n=a.length; if(n<6)return;
+    let active=a.findIndex(b=>b.classList.contains('active')); if(active<0)active=0;
+    // Six real content areas: log, history, progress, library, gym, backup.
+    go(dx<0?(active+1)%6:(active+5)%6);
+  },{passive:true,capture:true});
+
+  function keyboardState(){
+    if(!isMobile())return;
+    const vv=window.visualViewport;
+    let open=false;
+    if(vv){open=(window.innerHeight-vv.height)>120;}
+    else {open=document.activeElement && /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName);}
+    document.body.classList.toggle('zd-keyboard-open',!!open);
+    if(open){
+      const el=document.activeElement;
+      if(el&&/^(INPUT|TEXTAREA)$/.test(el.tagName)){
+        setTimeout(()=>el.scrollIntoView({block:'center',inline:'nearest',behavior:'smooth'}),80);
+      }
+    }
+  }
+  if(window.visualViewport){visualViewport.addEventListener('resize',keyboardState,{passive:true});visualViewport.addEventListener('scroll',keyboardState,{passive:true});}
+  document.addEventListener('focusin',()=>setTimeout(keyboardState,60),{passive:true});
+  document.addEventListener('focusout',()=>setTimeout(keyboardState,180),{passive:true});
+  window.addEventListener('resize',keyboardState,{passive:true});
+  setTimeout(keyboardState,300);
+})();
+</script>
+
 </body>
 </html>
 <style id="zdv12-iron-final">
@@ -652,124 +726,5 @@ html,body,#root{background:var(--iron-black)!important}
 </style>
 
 
-<style id="zdv16-fixes">
-/* V16: robust Android keyboard handling + swipe through ALL sections */
-@media(max-width:700px){
-  html,body,#root{overscroll-behavior-x:none;}
-  .kt-main{touch-action:pan-y!important;}
-  body.zd-keyboard-open .kt-app{
-    height:var(--zd-visual-height,100svh)!important;
-    min-height:var(--zd-visual-height,100svh)!important;
-    overflow:hidden!important;
-  }
-  body.zd-keyboard-open .kt-main{
-    height:calc(var(--zd-visual-height,100svh) - 72px)!important;
-    max-height:calc(var(--zd-visual-height,100svh) - 72px)!important;
-    overflow-y:auto!important;
-    -webkit-overflow-scrolling:touch!important;
-    padding-bottom:24px!important;
-  }
-  body.zd-keyboard-open .kt-app:after{bottom:72px!important;}
-  body.zd-keyboard-open #zdv9-bottom-nav{bottom:0!important;}
-  body.zd-keyboard-open #zdv9-more{bottom:82px!important;}
-}
-</style>
-<script>
-/* V16 patch */
-(function(){
-  const MOBILE=()=>window.matchMedia('(max-width:700px)').matches;
-  const allTabs=()=>{
-    const tabs=document.querySelector('.kt-tabs');
-    return tabs ? [...tabs.querySelectorAll('.kt-tab')] : [];
-  };
-  const goTo=(index)=>{
-    const tabs=allTabs();
-    const b=tabs[index];
-    if(!b) return;
-    b.click();
-    const more=document.getElementById('zdv9-more');
-    if(more) more.classList.remove('open');
-    setTimeout(syncBottomNav,0);
-  };
 
-  // Swipe order: Trening → Povijest → Progres → Vježbe → Moja teretana → Sigurnosna kopija → Trening
-  let sx=0,sy=0,tracking=false,swiping=false;
-  document.addEventListener('touchstart',e=>{
-    if(!MOBILE()||e.touches.length!==1) return;
-    const t=e.target;
-    if(t.closest('#zdv9-bottom-nav,#zdv9-more,input,textarea,select,button,[contenteditable="true"]')) return;
-    sx=e.touches[0].clientX; sy=e.touches[0].clientY; tracking=true; swiping=false;
-  },{passive:true});
-  document.addEventListener('touchmove',e=>{
-    if(!tracking||e.touches.length!==1) return;
-    const dx=e.touches[0].clientX-sx, dy=e.touches[0].clientY-sy;
-    if(Math.abs(dx)>18 && Math.abs(dx)>Math.abs(dy)*1.25){
-      swiping=true;
-      if(Math.abs(dx)>45) e.preventDefault();
-    }
-  },{passive:false});
-  document.addEventListener('touchend',e=>{
-    if(!tracking) return;
-    tracking=false;
-    if(!swiping) return;
-    const dx=e.changedTouches[0].clientX-sx;
-    if(Math.abs(dx)<50) return;
-    const tabs=allTabs();
-    if(tabs.length<6) return;
-    let active=tabs.findIndex(b=>b.classList.contains('active'));
-    if(active<0) active=0;
-    goTo(dx<0 ? (active+1)%6 : (active+5)%6);
-  },{passive:true});
-
-  // Make the fifth bottom item visually active while inside Moja teretana / Sigurnosna kopija.
-  function syncBottomNav(){
-    const tabs=allTabs(), nav=document.getElementById('zdv9-bottom-nav');
-    if(!nav||tabs.length<6) return;
-    const buttons=[...nav.querySelectorAll('button')];
-    const active=tabs.findIndex(b=>b.classList.contains('active'));
-    buttons.forEach(b=>b.classList.remove('active'));
-    if(active>=0 && active<4 && buttons[active]) buttons[active].classList.add('active');
-    if(active>=4 && buttons[4]) buttons[4].classList.add('active');
-  }
-  window.__zdv16Sync=syncBottomNav;
-  new MutationObserver(syncBottomNav).observe(document.body,{subtree:true,attributes:true,attributeFilter:['class']});
-  const bootSync=()=>setTimeout(syncBottomNav,0);
-  document.addEventListener('click',bootSync,true);
-
-  // Android keyboard: use VisualViewport to size the actual app viewport, then scroll the focused field.
-  const updateKeyboard=()=>{
-    if(!window.visualViewport || !MOBILE()) return;
-    const vv=window.visualViewport;
-    const h=Math.max(320,Math.round(vv.height));
-    document.documentElement.style.setProperty('--zd-visual-height',h+'px');
-    const gap=Math.max(0,window.innerHeight-vv.height-vv.offsetTop);
-    const open=gap>100;
-    document.body.classList.toggle('zd-keyboard-open',open);
-    if(open){
-      const active=document.activeElement;
-      if(active && /^(INPUT|TEXTAREA|SELECT)$/.test(active.tagName)){
-        setTimeout(()=>{
-          const main=document.querySelector('.kt-main');
-          if(!main) return;
-          const r=active.getBoundingClientRect();
-          const visibleBottom=vv.height-18;
-          if(r.bottom>visibleBottom){
-            main.scrollTop += r.bottom-visibleBottom+18;
-          } else if(r.top<72){
-            main.scrollTop -= (72-r.top+18);
-          }
-        },100);
-      }
-    }
-  };
-  if(window.visualViewport){
-    visualViewport.addEventListener('resize',updateKeyboard,{passive:true});
-    visualViewport.addEventListener('scroll',updateKeyboard,{passive:true});
-  }
-  document.addEventListener('focusin',()=>setTimeout(updateKeyboard,80),{passive:true});
-  document.addEventListener('focusout',()=>setTimeout(updateKeyboard,180),{passive:true});
-  window.addEventListener('resize',updateKeyboard,{passive:true});
-  setTimeout(updateKeyboard,300);
-})();
-</script>
 </html>

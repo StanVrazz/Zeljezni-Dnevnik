@@ -616,3 +616,37 @@ html,body,#root{background:var(--iron-black)!important}
 </script>
 </body>
 </html>
+<style id="zdv12-iron-final">
+/* ===== V12 IRON FINAL =====
+   Cleaner splash: no slogan/arms; larger text; plate positioned lower-right. */
+#zdv11-splash:before{
+  background-image:linear-gradient(180deg,rgba(0,0,0,.03) 0%,rgba(0,0,0,.08) 46%,rgba(0,0,0,.74) 100%),url('./images/iron-cover-clean-v12.png')!important;
+  background-position:center!important;
+  background-size:cover!important;
+  background-repeat:no-repeat!important;
+}
+#zdv11-splash .v11-splash-inner{padding-bottom:calc(24px + env(safe-area-inset-bottom))!important}
+.kt-title{font-size:25px!important;font-weight:950!important;letter-spacing:.035em!important}
+.kt-label{font-size:11px!important;letter-spacing:.11em!important}
+.kt-date-input,.kt-picker-input{font-size:16px!important}
+.kt-history-date,.kt-library-heading{font-size:14px!important}
+.kt-history-exercise-name{font-size:15px!important}
+#zdv9-bottom-nav button{font-size:11px!important}
+#zdv9-bottom-nav button .bn-icon{font-size:25px!important;line-height:25px!important}
+/* V12: slightly larger, lower-right 20 KG plate on every content screen */
+.kt-app:after{
+  right:-115px!important;
+  bottom:62px!important;
+  width:460px!important;
+  height:460px!important;
+  background:url('./images/iron-weight-texture-clean.png') center/cover no-repeat!important;
+  opacity:.30!important;
+  filter:grayscale(1) contrast(1.42) brightness(1.18)!important;
+  mix-blend-mode:screen!important;
+}
+@media(max-width:700px){
+ .kt-title{font-size:25px!important}
+ .kt-main{padding-bottom:112px!important}
+}
+@media(max-width:370px){.kt-title{font-size:23px!important}}
+</style>

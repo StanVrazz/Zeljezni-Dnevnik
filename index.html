@@ -777,5 +777,89 @@ html,body,#root{background:var(--iron-black)!important}
 }
 @media(max-width:370px){.kt-title{font-size:23px!important}}
 </style>
+<style id="zdv22-library-view-toggle">
+/* V22: grid/list view toggle for the exercise library. */
+.kt-view-toggle{display:flex;justify-content:flex-end;gap:6px;margin:-8px 0 14px;}
+.kt-view-toggle button{
+  width:36px;height:30px;border-radius:7px;border:1px solid #363b41;
+  background:#15171a;color:#8f949b;font-size:15px;line-height:1;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.kt-view-toggle button.active{
+  background:linear-gradient(180deg,#d91920,#b40d13);color:#fff;border-color:#f0343a;
+}
+body.kt-library-list-mode .kt-exercise-grid{
+  grid-template-columns:1fr!important;
+  gap:2px!important;
+}
+body.kt-library-list-mode .kt-exercise-card{
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  text-align:left!important;
+  gap:12px!important;
+  padding:7px 10px!important;
+}
+body.kt-library-list-mode .kt-exercise-card-img-wrap{
+  width:44px!important;
+  height:44px!important;
+  flex:0 0 auto!important;
+  aspect-ratio:unset!important;
+  border-radius:6px!important;
+}
+body.kt-library-list-mode .kt-exercise-card-name{
+  text-align:left!important;
+  padding:0!important;
+  font-size:13px!important;
+}
+body.kt-library-list-mode .kt-exercise-card-meta{
+  text-align:left!important;
+  padding:0!important;
+}
+body.kt-library-list-mode .kt-exercise-card-desc{
+  display:none!important;
+}
+body.kt-library-list-mode .kt-drag-handle{
+  width:15px!important;height:15px!important;top:1px!important;left:1px!important;
+}
+body.kt-library-list-mode .kt-exercise-card-plus{
+  width:12px!important;height:12px!important;
+}
+</style>
+<script>
+/* V22: inject a grid/list toggle above the exercise library. Pure CSS
+   re-layout of the existing cards — no change to the underlying data or
+   React logic. Re-injected via MutationObserver since the library tab's
+   content is unmounted/remounted whenever the person switches tabs away
+   and back (same robust pattern as the V9 bottom-nav injection). */
+(function(){
+  const KEY='zdv_library_view';
+  function getMode(){ try{ return localStorage.getItem(KEY)||'grid'; }catch(_){ return 'grid'; } }
+  function setMode(mode){ try{ localStorage.setItem(KEY,mode); }catch(_){} apply(mode); }
+  function apply(mode){
+    document.body.classList.toggle('kt-library-list-mode', mode==='list');
+    document.querySelectorAll('.kt-view-toggle button').forEach(b=>{
+      b.classList.toggle('active', b.dataset.mode===mode);
+    });
+  }
+  function inject(){
+    const filters=document.querySelector('.kt-library-filters');
+    if(!filters||!filters.parentNode||filters.parentNode.querySelector('.kt-view-toggle'))return;
+    const wrap=document.createElement('div');
+    wrap.className='kt-view-toggle';
+    const gridBtn=document.createElement('button');
+    gridBtn.dataset.mode='grid'; gridBtn.textContent='▦'; gridBtn.setAttribute('aria-label','Prikaz mreže');
+    const listBtn=document.createElement('button');
+    listBtn.dataset.mode='list'; listBtn.textContent='☰'; listBtn.setAttribute('aria-label','Prikaz liste');
+    [gridBtn,listBtn].forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
+    wrap.appendChild(gridBtn); wrap.appendChild(listBtn);
+    filters.parentNode.insertBefore(wrap, filters.nextSibling);
+    apply(getMode());
+  }
+  new MutationObserver(inject).observe(document.body,{childList:true,subtree:true});
+  apply(getMode());
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inject); else inject();
+})();
+</script>
 </body>
 </html>

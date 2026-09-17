@@ -760,13 +760,15 @@ html,body,#root{background:var(--iron-black)!important}
 .kt-history-exercise-name{font-size:15px!important}
 #zdv9-bottom-nav button{font-size:11px!important}
 #zdv9-bottom-nav button .bn-icon{font-size:25px!important;line-height:25px!important}
-/* V12: slightly larger, lower-right 20 KG plate on every content screen */
+/* V13: use the sharper plate photo and pull it further onto screen so "20K"
+   (and as much of the following letter as the source photo actually has)
+   is visible, instead of being cropped down to just "20". */
 .kt-app:after{
-  right:-115px!important;
+  right:0!important;
   bottom:62px!important;
   width:460px!important;
   height:460px!important;
-  background:url('./images/iron-weight-texture-clean.png') center/cover no-repeat!important;
+  background:url('./images/iron-weight-texture-clean-v13.png') center/cover no-repeat!important;
   opacity:.30!important;
   filter:grayscale(1) contrast(1.42) brightness(1.18)!important;
   mix-blend-mode:screen!important;

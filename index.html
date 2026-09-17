@@ -664,7 +664,7 @@ html,body,#root{background:var(--iron-black)!important}
 
   // Swipe on the app background/content. Interactive controls remain untouched.
   let sx=0,sy=0,tracking=false;
-  const blocked=t=>!!(t&&t.closest&&t.closest('#zdv9-bottom-nav,#zdv9-more,input,textarea,select,button,[contenteditable="true"],.kt-exercise-card'));
+  const blocked=t=>!!(t&&t.closest&&t.closest('#zdv9-bottom-nav,#zdv9-more,input,textarea,select,button,[contenteditable="true"]'));
   document.addEventListener('touchstart',e=>{
     if(!isMobile()||e.touches.length!==1||blocked(e.target))return;
     sx=e.touches[0].clientX; sy=e.touches[0].clientY; tracking=true;

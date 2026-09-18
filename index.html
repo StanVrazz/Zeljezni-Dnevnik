@@ -854,5 +854,110 @@ body.kt-library-list-mode .kt-exercise-card-desc{
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inject); else inject();
 })();
 </script>
+<style id="zdv23-exercise-detail">
+/* V23: tap-to-open exercise detail sheet (description + large media). */
+#zdv23-exercise-modal{position:fixed;inset:0;z-index:90000;pointer-events:none;}
+#zdv23-exercise-modal.zdv23-open{pointer-events:auto;}
+#zdv23-exercise-modal .zdv23-backdrop{position:absolute;inset:0;background:rgba(0,0,0,0);transition:background .25s ease;}
+#zdv23-exercise-modal.zdv23-open .zdv23-backdrop{background:rgba(0,0,0,.75);}
+#zdv23-exercise-modal .zdv23-panel{
+  position:absolute;left:0;right:0;bottom:0;
+  max-height:88vh;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  background:#12151a;border-radius:16px 16px 0 0;
+  padding:10px 20px calc(24px + env(safe-area-inset-bottom));
+  box-sizing:border-box;
+  transform:translateY(100%);transition:transform .28s cubic-bezier(.32,.72,0,1);
+  box-shadow:0 -10px 40px rgba(0,0,0,.5);
+}
+#zdv23-exercise-modal.zdv23-open .zdv23-panel{transform:translateY(0);}
+#zdv23-exercise-modal .zdv23-handle{width:36px;height:4px;background:#3a3e44;border-radius:2px;margin:6px auto 14px;}
+#zdv23-exercise-modal .zdv23-close{
+  position:absolute;top:10px;right:14px;width:32px;height:32px;border-radius:50%;
+  border:1px solid #363b41;background:#1a1d22;color:#c7cbd1;font-size:18px;line-height:1;cursor:pointer;
+}
+#zdv23-exercise-modal .zdv23-media{
+  width:100%;aspect-ratio:1;background:#000;border-radius:10px;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;margin-bottom:16px;
+}
+#zdv23-exercise-modal .zdv23-media img,#zdv23-exercise-modal .zdv23-media video{width:100%;height:100%;object-fit:contain;}
+#zdv23-exercise-modal .zdv23-name{font-size:19px;font-weight:800;color:#f2f3f4;margin-bottom:4px;}
+#zdv23-exercise-modal .zdv23-meta{font-size:12px;font-weight:700;letter-spacing:.06em;color:#e0464c;text-transform:uppercase;margin-bottom:12px;}
+#zdv23-exercise-modal .zdv23-desc{font-size:14px;line-height:1.5;color:#b8bcc1;margin-bottom:20px;}
+#zdv23-exercise-modal .zdv23-change-img{
+  width:100%;height:46px;border-radius:9px;border:1px solid #363b41;background:#1a1d22;
+  color:#c7cbd1;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;
+}
+</style>
+<script>
+/* V23: intercepts a tap on an exercise card (grid or list mode) and opens a
+   detail sheet (photo/animation + description) instead of immediately
+   jumping to "set custom photo". "Promijeni sliku" inside the sheet
+   re-dispatches a real click on the original card with a one-shot bypass
+   flag, so React's own existing handler (which opens the file picker)
+   still runs completely unmodified — this never touches that logic. */
+(function(){
+  let bypass=false;
+  /* Slot for the realistic detail-view animation/photo per exercise id —
+     empty for now. When one arrives, add it here, e.g. m25:"./images/dips-detail.mp4"
+     — nothing else in this script needs to change. Until an id has an entry,
+     the modal falls back to that exercise's existing (abstract) card thumbnail. */
+  const builtInDetailMedia={m10:"./images/assisted-pull-up-detail.mp4"};
+  function buildModal(){
+    let el=document.getElementById('zdv23-exercise-modal');
+    if(el)return el;
+    el=document.createElement('div');
+    el.id='zdv23-exercise-modal';
+    el.innerHTML='<div class="zdv23-backdrop"></div><div class="zdv23-panel"><div class="zdv23-handle"></div><button class="zdv23-close" aria-label="Zatvori">&times;</button><div class="zdv23-media"><video muted loop playsinline style="display:none"></video><img alt=""/></div><div class="zdv23-name"></div><div class="zdv23-meta"></div><div class="zdv23-desc"></div><button class="zdv23-change-img">Promijeni sliku</button></div>';
+    document.body.appendChild(el);
+    el.querySelector('.zdv23-backdrop').addEventListener('click',close);
+    el.querySelector('.zdv23-close').addEventListener('click',close);
+    return el;
+  }
+  function close(){
+    const el=document.getElementById('zdv23-exercise-modal');
+    if(el)el.classList.remove('zdv23-open');
+  }
+  function open(card){
+    const el=buildModal();
+    const exId=card.dataset.exerciseId||'';
+    const isCustom=exId.indexOf('c-')===0;
+    el.querySelector('.zdv23-name').textContent=card.querySelector('.kt-exercise-card-name')?.textContent||'';
+    el.querySelector('.zdv23-meta').textContent=card.querySelector('.kt-exercise-card-meta')?.textContent||'';
+    el.querySelector('.zdv23-desc').textContent=card.querySelector('.kt-exercise-card-desc')?.textContent||'';
+
+    const img=el.querySelector('.zdv23-media img');
+    const vid=el.querySelector('.zdv23-media video');
+    const detail=builtInDetailMedia[exId];
+    const thumbSrc=card.querySelector('.kt-exercise-card-img')?.src||'';
+    if(detail&&/\.(mp4|webm)$/i.test(detail)){
+      vid.src=detail; vid.style.display=''; vid.play&&vid.play().catch(()=>{});
+      img.style.display='none';
+    }else{
+      vid.pause&&vid.pause(); vid.removeAttribute('src'); vid.style.display='none';
+      const shown=detail||thumbSrc;
+      if(shown){img.src=shown;img.style.display='';}else{img.removeAttribute('src');img.style.display='none';}
+    }
+
+    const changeBtn=el.querySelector('.zdv23-change-img');
+    changeBtn.style.display=isCustom?'':'none';
+    changeBtn.onclick=function(){
+      close();
+      bypass=true;
+      card.click();
+      setTimeout(function(){bypass=false;},0);
+    };
+    requestAnimationFrame(function(){el.classList.add('zdv23-open');});
+  }
+  document.addEventListener('click',function(e){
+    if(bypass)return;
+    const card=e.target.closest?e.target.closest('.kt-exercise-card'):null;
+    if(!card)return;
+    if(e.target.closest('button'))return;
+    e.preventDefault();
+    e.stopPropagation();
+    open(card);
+  },true);
+})();
+</script>
 </body>
 </html>

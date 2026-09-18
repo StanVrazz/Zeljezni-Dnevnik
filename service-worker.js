@@ -1,21 +1,12 @@
-const CACHE = "zeljezni-dnevnik-v23";
+const CACHE = "zeljezni-dnevnik-v24";
 const ASSETS = [
   "./",
   "./index.html",
   "./manifest.json",
   "./icon-192.png",
   "./icon-512.png",
-  "./images/assisted-pull-up.png",
-  "./images/chest-press.png",
-  "./images/leg-press.png",
-  "./images/shoulder-press.png",
-  "./images/iron-cover.png",
-  "./images/iron-cover-clean-v12.png",
-  "./images/iron-weight-texture-clean-v13.png",
-  "./images/iron-weight-texture.png",
-  "./images/iron-weight-texture-hd.png",
-  "./images/iron-weight-texture-clean.png",
-  "./images/iron-weight-texture-v11.png"
+  "./images/zeljezni-dnevnik-start.png",
+  "./images/iron-weight-texture-clean-v13.png"
 ];
 self.addEventListener("install", event => {
   event.waitUntil(
